@@ -7,7 +7,13 @@ Covert Channel documentation
 ============================
 
 Please add your names, group ID, and your link to the forked public repository here by editing `index.rst` in the docs folder.
+Group #18
 
+Mohammed Taha Khan, 2547222
+
+Affan Ahmed, 2546331
+
+https://github.com/TahaKhan998/covertovert
 
 .. toctree::
    :maxdepth: 2
