@@ -55,7 +55,6 @@ class MyCovertChannel(CovertChannelBase):
 
         # start_time = time.time()
 
-
         for curr_bit in binary_message:
             if (curr_bit == "1"):
                 packets = 2
