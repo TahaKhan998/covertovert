@@ -168,7 +168,7 @@ class MyCovertChannel(CovertChannelBase):
                 if (len(binary_message) == 8):
                     decoded_message += self.convert_eight_bits_to_character(binary_message)
                     binary_message = ""
-                    print("char =", decoded_message[-1])
+      
 
                     if (decoded_message[-1] == '.'):
                         message_ended = True
