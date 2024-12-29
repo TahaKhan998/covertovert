@@ -19,6 +19,36 @@ class MyCovertChannel(CovertChannelBase):
         - After the implementation, please rewrite this comment part to explain your code basically.
         """
 
+        """
+        --- We selected the covert channel:
+            Covert Storage Channel that exploits Packet Bursting using DNS [Code: CSC-PB-DNS]
+
+        --- This means that the encoding of the data is based on the number of packets sent in a "burst."
+            Specifically:
+            - Sending 2 packets in a burst encodes a binary `1`.
+            - Sending 3 packets in a burst encodes a binary `0`.
+        
+        --- Now, we will explain the sending code here:
+
+        - Firstly, we suppress a syntax warning caused by the base class's send function to make the output cleaner.
+
+        - Then, we generate a random binary message to send using a helper function from the base class:
+            `generate_random_binary_message_with_logging()`. This message is also logged in a file for reference.
+
+        - For each bit in the message:
+            - If the bit is `1`, we send a burst of 2 packets.
+            - If the bit is `0`, we send a burst of 3 packets.
+        
+        - After each burst, we introduce a delay (`burst_time`) to separate the bursts. This is crucial to ensure
+          the receiver can distinguish between different bursts and count the packets accurately.
+
+        - Once all bits are sent, we send an additional packet to indicate the end of the transmission.
+        
+        - Originally, we also calculated the total transmission time and covert channel capacity (bits/second),
+          but these lines are currently commented out.
+
+        """
+
         warnings.filterwarnings("ignore", category=SyntaxWarning)
 
         binary_message =  self.generate_random_binary_message_with_logging(log_file_name)
@@ -57,6 +87,54 @@ class MyCovertChannel(CovertChannelBase):
         - In this function, you are expected to receive and decode the transferred message. Because there are many types of covert channels, the receiver implementation depends on the chosen covert channel type, and you may not need to use the functions in CovertChannelBase.
         - After the implementation, please rewrite this comment part to explain your code basically.
         """
+
+        """
+        --- We selected the covert channel:
+            Covert Storage Channel that exploits Packet Bursting using DNS [Code: CSC-PB-DNS]
+
+        --- In the receiving function, we will explain how the decoding process works:
+
+        - The receiver listens for packets on UDP port 53 (the DNS communication port).
+        
+        - For each received packet:
+            - We calculate the time difference between the current packet and the previous one.
+            - We count how many packets were received in the burst before the time gap exceeds the burst time.
+
+        - Based on the packet count:
+            - If 2 packets were received in the burst, it represents a binary `1`.
+            - If 3 packets were received in the burst, it represents a binary `0`.
+
+        - These decoded bits are appended to a binary message string. Once we have 8 bits (1 byte), they are
+          converted into a character using the base class's helper function:
+          `convert_eight_bits_to_character()`.
+
+        - If the character `.` is decoded, it indicates the end of the message, and we stop sniffing further packets.
+
+        - Finally, the decoded message is logged using `log_message()`.
+
+        --- Now, we will explain the key sections of the code:
+
+        1. **Initialization:**
+            - `binary_message`: A string to store the binary bits decoded from packet bursts.
+            - `decoded_message`: A string to store the final decoded message as characters.
+            - `packets_received`: A counter to track how many packets are received in a burst.
+            - `last_time`: Stores the timestamp of the last packet for calculating time differences.
+            - `message_ended`: A flag to indicate when the message ends.
+
+        2. **Packet Handling Logic:**
+            - Each incoming packet triggers the `receive_packet()` function:
+                - The time difference between packets is calculated.
+                - If the time gap exceeds the `burst_time`, the burst ends, and the packet count is used to
+                  decode the bit (`1` or `0`).
+
+        3. **Stop Condition:**
+            - The `end()` function returns `True` when the message ends (indicated by `.`), stopping the sniffing loop.
+
+        4. **Logging:**
+            - The decoded message is logged at the end of the function for reference.
+
+        """
+        
         binary_message = ""
         decoded_message = ""
         packets_received = 0
