@@ -23,7 +23,7 @@ class MyCovertChannel(CovertChannelBase):
 
         binary_message =  self.generate_random_binary_message_with_logging(log_file_name)
 
-        start_time = time.time()
+        # start_time = time.time()
 
 
         for curr_bit in binary_message:
@@ -44,13 +44,12 @@ class MyCovertChannel(CovertChannelBase):
         super().send(packet)
 
 
-        end_time = time.time()
+        # end_time = time.time()
 
-        total_time = end_time - start_time
-        capacity = 128 / total_time  
-        print(f"Covert Channel Capacity: {capacity:.2f} bits/second")
-        print(f"{total_time}")
-        return binary_message
+        # total_time = end_time - start_time
+        # capacity = 128 / total_time  
+        # print(f"Covert Channel Capacity: {capacity:.2f} bits/second")
+        # print(f"{total_time}")
 
         
     def receive(self, burst_time, log_file_name):
@@ -106,7 +105,7 @@ class MyCovertChannel(CovertChannelBase):
 
         self.log_message(decoded_message, log_file_name)
 
-        return binary_message
+
 
 
 
